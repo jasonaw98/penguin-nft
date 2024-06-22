@@ -34,3 +34,7 @@ npm run dev
 bun run dev 
 ```
 
+## Potential Improvements
+
+* 1. Improve image loading capabilities and faster loading times 
+* 2. Image caching
