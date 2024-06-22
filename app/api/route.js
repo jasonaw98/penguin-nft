@@ -3,7 +3,7 @@ export async function POST(req) {
     try {
         const wallet = await req.json();
         console.log(wallet);
-        const response = await fetch(`https://eth-mainnet.g.alchemy.com/nft/v3/ddEjelJZ-/getNFTsForOwner?owner=${wallet}&contractAddresses[]=0xBd3531dA5CF5857e7CfAA92426877b022e612cf8&withMetadata=true&pageSize=100`,
+        const response = await fetch(`https://eth-mainnet.g.alchemy.com/nft/v3/${process.env.ALCHEMY_KEY}/getNFTsForOwner?owner=${wallet}&contractAddresses[]=0xBd3531dA5CF5857e7CfAA92426877b022e612cf8&withMetadata=true&pageSize=100`,
             {
                 method: 'GET',
                 headers: {
@@ -20,10 +20,10 @@ export async function POST(req) {
             attributes: nft.raw.metadata.attributes
         }));
 
-        console.log('Fetched data:', extractedData);
+        // console.log('Fetched data:', extractedData);
 
         return NextResponse.json({
-            message: "extractedData",
+            message: extractedData,
             status: 'success'
         });
 
