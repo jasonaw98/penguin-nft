@@ -16,15 +16,58 @@ const Main = () => {
   const [wallet, setWallet] = useState("");
   const [items, setItems] = useState<NFTItem[]>([]);
   const [searchPerformed, setSearchPerformed] = useState(false);
+  const [pagekey, setPagekey] = useState("")
 
-  async function getData() {
+  // async function getData() {
+  //   try {
+  //     const response = await fetch(`/api`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(wallet),
+  //     });
+
+  //     if (!response.ok) {
+  //       console.log(response);
+  //       throw new Error("Network response was not ok");
+  //     }
+
+  //     const data = await response.json();
+  //     if (Array.isArray(data.message)) {
+  //       setItems(data.message);
+  //       setPagekey(data.pageKey)
+  //     } else {
+  //       setItems([]);
+  //     }
+  //     setSearchPerformed(true);
+  //   } catch (error) {
+  //     console.log("Error fetching Data", error);
+  //     setItems([]);
+  //     setSearchPerformed(true);
+  //   }
+  // }
+
+  const number = [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+  ]
+
+  async function getNext() {
     try {
       const response = await fetch(`/api`, {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(wallet),
+        body: JSON.stringify({
+          wallet: wallet,
+          pageKey: pagekey
+        }),
       });
 
       if (!response.ok) {
@@ -35,6 +78,7 @@ const Main = () => {
       const data = await response.json();
       if (Array.isArray(data.message)) {
         setItems(data.message);
+        setPagekey(data.pageKey)
       } else {
         setItems([]);
       }
@@ -48,7 +92,7 @@ const Main = () => {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" || e.key === "enter") {
-      getData();
+      getNext();
     }
   };
 
@@ -81,7 +125,7 @@ const Main = () => {
           />
           <button
             className="text-white absolute end-2.5 bottom-2.5 bg-blue-600 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            onClick={getData}
+            onClick={getNext}
           >
             Search
           </button>
@@ -108,6 +152,11 @@ const Main = () => {
           </div>
         )}
       </div>
+      <button className="bg-blue-800 px-2 py-2 rounded" onClick={getNext}>Next Page</button>
+    <div className="flex w-[300px] gap-8">
+      {number.map(number => <div className="">
+        <button className="bg-blue-800 px-2 py-2 rounded-lg">{number}</button></div>)}
+    </div>
     </div>
   );
 };
